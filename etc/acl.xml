@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+	<acl>
+		<resources>
+			<resource id="Magento_Backend::admin">
+				<resource id="Shulgin_SqlReports::Querys" sortOrder="10" title="Querys">
+					<resource id="Shulgin_SqlReports::Querys_save" sortOrder="10" title="Save Querys"/>
+					<resource id="Shulgin_SqlReports::Querys_delete" sortOrder="20" title="Delete Querys"/>
+					<resource id="Shulgin_SqlReports::Querys_update" sortOrder="30" title="Update Querys"/>
+					<resource id="Shulgin_SqlReports::Querys_view" sortOrder="40" title="View Querys"/>
+				</resource>
+			</resource>
+		</resources>
+	</acl>
+</config>

@@ -1,0 +1,22 @@
+{
+    "name": "shulgin/module-sqlreports",
+    "description": "",
+    "type": "magento2-module",
+    "license": "proprietary",
+    "authors": [
+        {
+            "email": "shulgin23@gmail.com",
+            "name": "tal shulgin"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Shulgin\\SqlReports\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}

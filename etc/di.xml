@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+	<preference for="Shulgin\SqlReports\Api\QuerysRepositoryInterface" type="Shulgin\SqlReports\Model\QuerysRepository"/>
+	<preference for="Shulgin\SqlReports\Api\Data\QuerysInterface" type="Shulgin\SqlReports\Model\Querys"/>
+	<preference for="Shulgin\SqlReports\Api\Data\QuerysSearchResultsInterface" type="Magento\Framework\Api\SearchResults"/>
+	<virtualType name="Shulgin\SqlReports\Model\ResourceModel\Querys\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+		<arguments>
+			<argument name="mainTable" xsi:type="string">shulgin_sqlreports_querys</argument>
+			<argument name="resourceModel" xsi:type="string">Shulgin\SqlReports\Model\ResourceModel\Querys\Collection</argument>
+		</arguments>
+	</virtualType>
+	<type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+		<arguments>
+			<argument name="collections" xsi:type="array">
+				<item name="shulgin_sqlreports_querys_grid_data_source" xsi:type="string">Shulgin\SqlReports\Model\ResourceModel\Querys\Grid\Collection</item>
+			</argument>
+		</arguments>
+	</type>
+</config>

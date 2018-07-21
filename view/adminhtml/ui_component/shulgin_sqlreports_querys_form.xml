@@ -63,21 +63,61 @@
 				</item>
 			</argument>
 		</field>
-		<field name="Params">
+
+		<dynamicRows name="Params">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">
-					<item name="dataType" xsi:type="string">text</item>
-					<item name="label" translate="true" xsi:type="string">Params</item>
-					<item name="formElement" xsi:type="string">textarea</item>
-					<item name="source" xsi:type="string">Querys</item>
-					<item name="sortOrder" xsi:type="number">20</item>
 					<item name="dataScope" xsi:type="string">Params</item>
-					<item name="validation" xsi:type="array">
-						<item name="required-entry" xsi:type="boolean">false</item>
-					</item>
+					<item name="itemTemplate" xsi:type="string">record</item>
+					<item name="label" xsi:type="string" translate="true"> Add to other Warehouses </item>
+					<item name="dndConfig" xsi:type="boolean">false</item>
+					<item name="template" xsi:type="string">ui/dynamic-rows/templates/default</item>
+					<item name="unserialized" xsi:type="boolean">true</item>
 				</item>
 			</argument>
-		</field>
+			<container name="record" component="Magento_Ui/js/dynamic-rows/record">
+				<argument name="data" xsi:type="array">
+					<item name="config" xsi:type="array">
+						<item name="isTemplate" xsi:type="boolean">true</item>
+						<item name="is_collection" xsi:type="boolean">true</item>
+						<item name="componentType" xsi:type="string">container</item>
+					</item>
+				</argument>
+				<field name="name">
+					<argument name="data" xsi:type="array">
+						<item name="config" xsi:type="array">
+							<item name="dataType" xsi:type="string">text</item>
+							<item name="formElement" xsi:type="string">input</item>
+							<item name="dataScope" xsi:type="string">name</item>
+							<item name="label" xsi:type="string" translate="true">name</item>
+						</item>
+					</argument>
+				</field>
+				<field name="value">
+					<argument name="data" xsi:type="array">
+						<item name="config" xsi:type="array">
+							<item name="dataType" xsi:type="string">text</item>
+							<item name="formElement" xsi:type="string">input</item>
+							<item name="dataScope" xsi:type="string">value</item>
+							<item name="label" xsi:type="string" translate="true">value</item>
+						</item>
+					</argument>
+				</field>
+
+				<actionDelete name="actionDelete">
+                        <argument name="data" xsi:type="array">
+                            <item name="config" xsi:type="array">
+                                <item name="actionDelete" xsi:type="string">data-grid-actions-cell</item>
+                                <item name="dataType" xsi:type="string">text</item>
+                                <item name="label" xsi:type="string" translate="true">Actions</item>
+                                <item name="fit" xsi:type="boolean">true</item>
+                                <item name="sortOrder" xsi:type="string">80</item>
+                            </item>
+                        </argument>
+                    </actionDelete>
+			</container>
+		</dynamicRows>
+
 		<field name="Description">
 			<argument name="data" xsi:type="array">
 				<item name="config" xsi:type="array">

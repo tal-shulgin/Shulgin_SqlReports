@@ -1,12 +1,11 @@
 <?php
 /**
- * ResultGrid
- *
- * @copyright Copyright © 2018 Staempfli AG. All rights reserved.
- * @author    juan.alonso@staempfli.com
+ * Class Shulgin\SqlReports\Block\Adminhtml\Querys\Edit\Tab\ResultGrid
  */
 
 namespace Shulgin\SqlReports\Block\Adminhtml\Querys\Edit\Tab;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\App\ObjectManager;
 
 class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
 {
@@ -21,6 +20,11 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
      * @var \Magento\Framework\Message\ManagerInterface
      */
     protected $messageManager;
+
+    /**
+     * @var Json
+     */
+    private $serializer;
 
     protected $_queryId = null;
     protected $_resource = null;
@@ -44,6 +48,7 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
         \Magento\Framework\App\ResourceConnection $resource,
         \Magento\Framework\Data\CollectionFactory $collectionFactory,
         \Magento\Framework\Message\ManagerInterface $messageManager,
+        Json $serializer = null,
         array $data = []
     ) {
         $this->_coreRegistry = $coreRegistry;
@@ -51,6 +56,7 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
         $this->_collectionFactory = $collectionFactory;
         $this->_querysRepository = $querysRepository;
         $this->messageManager = $messageManager;
+        $this->serializer = $serializer ?: ObjectManager::getInstance()->get(Json::class);
         $this->_queryId = $context->getRequest()->getParam('querys_id');
         parent::__construct($context, $backendHelper, $data);
     }
@@ -69,40 +75,32 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
         $data = $this->_querysRepository->getById($this->_queryId);
         $connection = $this->_resource->getConnection(\Magento\Framework\App\ResourceConnection::DEFAULT_CONNECTION);
         $sqlQuery = $data->getQuery();
-        //$sqlParams = str_split('\r\n', $data->getParams());
+        $sqlParams = $data->getParams();
 
-  /*      if(!empty($data->getParams())) {
-            $sqlParams = explode('\r\n', $data->getParams());
-            if(is_array($sqlParams)) {
-                //var_dump(__LINE__);
-                foreach ($sqlParams as $param) {
-                    //var_dump(__LINE__, $param);
-                    $paramData = explode('=', $param);
+        if(isset($sqlParams) && !empty($sqlParams)) {
+            $sqlParams = $this->serializer->unserialize($sqlParams, true);
+            $sqlParams = $sqlParams['Params'];
+        } else {
+            $sqlParams = [];
+        }
 
-                    if(!(isset($paramData[0]) && isset($paramData[1]))) {
-                        continue;
-                    }
-                    //var_dump(__LINE__);
-                    $sqlQuery  = str_replace($paramData[0].';', $paramData[1], $sqlQuery);
-                }
-            }
-        } */
+        foreach($sqlParams as $key => $param) {
+            $sqlQuery  = str_replace('@'. $param['name']. ';', $param['value'], $sqlQuery);
+        }
 
-//var_dump($sqlQuery);
         try {
             $result = $connection->fetchAll($sqlQuery);
         } catch( \Exception $e) {
             $this->_queryCollection = [];
             $this->messageManager->addError($e->getMessage());
         }
-
         
-
         if(!empty($result)) {
             $collection = $this->_collectionFactory->create();
 
             foreach ($result as $item) {
                 $varienObject = new \Magento\Framework\DataObject();
+                //$varienObject = new \Magento\Framework\Data\Collection();
                 $varienObject->setData($item);
                 $collection->addItem($varienObject);
             }
@@ -112,6 +110,7 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
             }
 
             $this->_queryCollection = $collection;
+            $this->setCollection($this->_queryCollection);
         }
     }
 
@@ -122,7 +121,6 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
      */
     protected function _prepareCollection()
     {
-        $this->setCollection($this->_queryCollection);
         return parent::_prepareCollection();
     }
 
@@ -138,13 +136,13 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
             $this->addColumn($column, ['header' => __($column), 'index' => $column]);
         }
 
-        $this->addExportType('*/*/exportCouponsCsv', __('CSV'));
-        $this->addExportType('*/*/exportCouponsXml', __('Excel XML'));
+        $this->addExportType('*/*/ExportDownloadsCsv', __('CSV'));
+        //$this->addExportType('*/*/exportXml', __('Excel XML'));
         return parent::_prepareColumns();
     }
 
     /**
-     * Get grid url
+     * Gets grid url
      *
      * @return string
      */
@@ -152,5 +150,24 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
     {
         //return $this->getUrl('sales_rule/*/couponsGrid', ['_current' => true]);
         return '';
+    }
+
+    /**
+     *  Gets grid columns names.
+     *  @return array
+     */
+    public function getHeaders()
+    {
+        return $this->_columnsGrid;
+    }
+
+    /**
+     * Gets querty collection.
+     * 
+     * @return collection
+     */
+    public function getCollection()
+    {
+        return parent::getCollection();
     }
 }

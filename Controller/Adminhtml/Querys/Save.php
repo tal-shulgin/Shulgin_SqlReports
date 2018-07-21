@@ -4,11 +4,21 @@
 namespace Shulgin\SqlReports\Controller\Adminhtml\Querys;
 
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\App\ObjectManager;
 
 class Save extends \Magento\Backend\App\Action
 {
 
+    /**
+     * @var dataPersistor
+     */
     protected $dataPersistor;
+    
+    /**
+     * @var Json
+     */
+    private $serializer;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
@@ -16,9 +26,11 @@ class Save extends \Magento\Backend\App\Action
      */
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor
+        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor,
+        Json $serializer = null
     ) {
         $this->dataPersistor = $dataPersistor;
+        $this->serializer = $serializer ?: ObjectManager::getInstance()->get(Json::class);
         parent::__construct($context);
     }
 
@@ -40,7 +52,13 @@ class Save extends \Magento\Backend\App\Action
                 $this->messageManager->addErrorMessage(__('This Querys no longer exists.'));
                 return $resultRedirect->setPath('*/*/');
             }
-        
+
+            if(isset($data['Params'])) {
+                $data['Params'] = $this->serializer->serialize($data['Params']);
+            } else {
+                $data['Params'] = '';
+            }
+
             $model->setData($data);
         
             try {

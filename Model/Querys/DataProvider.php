@@ -5,14 +5,20 @@ namespace Shulgin\SqlReports\Model\Querys;
 
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Shulgin\SqlReports\Model\ResourceModel\Querys\CollectionFactory;
+use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\App\ObjectManager;
 
 class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
 {
 
     protected $loadedData;
     protected $collection;
-
     protected $dataPersistor;
+
+    /**
+     * @var Json
+     */
+    private $serializer;
 
 
     /**
@@ -32,11 +38,13 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         $requestFieldName,
         CollectionFactory $collectionFactory,
         DataPersistorInterface $dataPersistor,
+        Json $serializer = null,
         array $meta = [],
         array $data = []
     ) {
         $this->collection = $collectionFactory->create();
         $this->dataPersistor = $dataPersistor;
+        $this->serializer = $serializer ?: ObjectManager::getInstance()->get(Json::class);
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 
@@ -50,14 +58,25 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
         if (isset($this->loadedData)) {
             return $this->loadedData;
         }
+
         $items = $this->collection->getItems();
+
         foreach ($items as $model) {
-            $this->loadedData[$model->getId()] = $model->getData();
+            $data = $model->getData();
+
+            if(isset($data['Params']) && !empty($data['Params'])) {
+                $data['Params'] = $this->serializer->unserialize($data['Params']);
+            }
+
+            $this->loadedData[$model->getId()] = $data;
         }
+
         $data = $this->dataPersistor->get('shulgin_sqlreports_querys');
-        
-        if (!empty($data)) {
+
+        if (!empty($data)) 
+        {
             $model = $this->collection->getNewEmptyItem();
+
             $model->setData($data);
             $this->loadedData[$model->getId()] = $model->getData();
             $this->dataPersistor->clear('shulgin_sqlreports_querys');

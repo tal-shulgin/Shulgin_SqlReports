@@ -24,7 +24,7 @@ class Delete extends \Shulgin\SqlReports\Controller\Adminhtml\Querys
                 $model->load($id);
                 $model->delete();
                 // display success message
-                $this->messageManager->addSuccessMessage(__('You deleted the Querys.'));
+                $this->messageManager->addSuccessMessage(__('You deleted the Query.'));
                 // go to grid
                 return $resultRedirect->setPath('*/*/');
             } catch (\Exception $e) {
@@ -35,7 +35,7 @@ class Delete extends \Shulgin\SqlReports\Controller\Adminhtml\Querys
             }
         }
         // display error message
-        $this->messageManager->addErrorMessage(__('We can\'t find a Querys to delete.'));
+        $this->messageManager->addErrorMessage(__('We can\'t find a Query to delete.'));
         // go to grid
         return $resultRedirect->setPath('*/*/');
     }

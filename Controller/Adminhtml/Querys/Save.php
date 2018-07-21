@@ -49,7 +49,7 @@ class Save extends \Magento\Backend\App\Action
         
             $model = $this->_objectManager->create('Shulgin\SqlReports\Model\Querys')->load($id);
             if (!$model->getId() && $id) {
-                $this->messageManager->addErrorMessage(__('This Querys no longer exists.'));
+                $this->messageManager->addErrorMessage(__('This Query no longer exists.'));
                 return $resultRedirect->setPath('*/*/');
             }
 
@@ -63,7 +63,7 @@ class Save extends \Magento\Backend\App\Action
         
             try {
                 $model->save();
-                $this->messageManager->addSuccessMessage(__('You saved the Querys.'));
+                $this->messageManager->addSuccessMessage(__('You saved the Query.'));
                 $this->dataPersistor->clear('shulgin_sqlreports_querys');
         
                 if ($this->getRequest()->getParam('back')) {
@@ -73,7 +73,7 @@ class Save extends \Magento\Backend\App\Action
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
             } catch (\Exception $e) {
-                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the Querys.'));
+                $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the Query.'));
             }
         
             $this->dataPersistor->set('shulgin_sqlreports_querys', $data);

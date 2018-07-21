@@ -115,6 +115,19 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
     }
 
     /**
+     * Initialize child blocks
+     *
+     * @return $this
+     */
+    protected function _prepareLayout()
+    {
+        parent::_prepareLayout();
+        //$this->getLayout()->unsetChild('reset_filter_button');
+        //$this->getLayout()->unsetChild('search_button');
+        return $this;//parent::_prepareLayout();;
+    }
+
+    /**
      * Prepare collection for grid
      *
      * @return $this

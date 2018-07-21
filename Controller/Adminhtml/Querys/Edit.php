@@ -37,7 +37,7 @@ class Edit extends \Shulgin\SqlReports\Controller\Adminhtml\Querys
         if ($id) {
             $model->load($id);
             if (!$model->getId()) {
-                $this->messageManager->addErrorMessage(__('This Querys no longer exists.'));
+                $this->messageManager->addErrorMessage(__('This Query no longer exists.'));
                 /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
                 $resultRedirect = $this->resultRedirectFactory->create();
                 return $resultRedirect->setPath('*/*/');
@@ -49,11 +49,11 @@ class Edit extends \Shulgin\SqlReports\Controller\Adminhtml\Querys
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
         $this->initPage($resultPage)->addBreadcrumb(
-            $id ? __('Edit Querys') : __('New Querys'),
-            $id ? __('Edit Querys') : __('New Querys')
+            $id ? __('Edit Query') : __('New Query'),
+            $id ? __('Edit Query') : __('New Query')
         );
-        $resultPage->getConfig()->getTitle()->prepend(__('Queryss'));
-        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? $model->getTitle() : __('New Querys'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Query'));
+        $resultPage->getConfig()->getTitle()->prepend($model->getId() ? $model->getTitle() : __('New Query'));
         return $resultPage;
     }
 }

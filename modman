@@ -1,0 +1,11 @@
+# My_Module, just an example
+Api                         app/code/Shulgin/SqlReports/Api
+Block                       app/code/Shulgin/SqlReports/Block
+Controller                  app/code/Shulgin/SqlReports/Controller
+etc                         app/code/Shulgin/SqlReports/etc
+Model                       app/code/Shulgin/SqlReports/Model
+Setup                       app/code/Shulgin/SqlReports/Setup
+Ui                          app/code/Shulgin/SqlReports/Ui
+view                        app/code/Shulgin/SqlReports/View
+composer.json               app/code/Shulgin/SqlReports/composer.json
+registration.php            app/code/Shulgin/SqlReports/registration.php

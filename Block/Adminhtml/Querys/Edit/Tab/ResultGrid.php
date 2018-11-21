@@ -127,6 +127,15 @@ class ResultGrid extends \Magento\Backend\Block\Widget\Grid\Extended
         return $this;//parent::_prepareLayout();;
     }
 
+    protected function _initSelect()
+    {
+        foreach($this->_columnsGrid as $column){
+            $this->addFilterToMap( $column, 'main_table'. $column);
+        }
+
+        parent::_initSelect();
+    }
+
     /**
      * Prepare collection for grid
      *

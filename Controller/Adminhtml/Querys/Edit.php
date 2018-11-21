@@ -1,12 +1,13 @@
 <?php
 
-
 namespace Shulgin\SqlReports\Controller\Adminhtml\Querys;
+use Shulgin\AdvancedLogger\Logger\Logger;
 
 class Edit extends \Shulgin\SqlReports\Controller\Adminhtml\Querys
 {
 
     protected $resultPageFactory;
+    protected $_logger;
 
     /**
      * @param \Magento\Backend\App\Action\Context $context
@@ -16,9 +17,11 @@ class Edit extends \Shulgin\SqlReports\Controller\Adminhtml\Querys
     public function __construct(
         \Magento\Backend\App\Action\Context $context,
         \Magento\Framework\Registry $coreRegistry,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        Logger $logger
     ) {
         $this->resultPageFactory = $resultPageFactory;
+        $this->_logger = $logger;
         parent::__construct($context, $coreRegistry);
     }
 
@@ -44,7 +47,7 @@ class Edit extends \Shulgin\SqlReports\Controller\Adminhtml\Querys
             }
         }
         $this->_coreRegistry->register('shulgin_sqlreports_querys', $model);
-        
+
         // 3. Build edit form
         /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
         $resultPage = $this->resultPageFactory->create();

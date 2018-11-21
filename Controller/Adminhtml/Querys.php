@@ -1,8 +1,10 @@
 <?php
 
-
 namespace Shulgin\SqlReports\Controller\Adminhtml;
-
+/**
+ * Class Querys
+ * @package Shulgin\SqlReports\Controller\Adminhtml
+ */
 abstract class Querys extends \Magento\Backend\App\Action
 {
 
@@ -25,6 +27,7 @@ abstract class Querys extends \Magento\Backend\App\Action
      * Init page
      *
      * @param \Magento\Backend\Model\View\Result\Page $resultPage
+     * @return $resultPage
      */
     public function initPage($resultPage)
     {
